@@ -6,6 +6,7 @@ import (
 	"os"
 	"net/http"
 	"io"
+	"flag"
 )
 
 // Inspired by: https://github.com/thbar/golang-playground/blob/master/download-files.go
@@ -28,13 +29,22 @@ func fetchURL(url string) {
 	}
 	defer response.Body.Close()
 
-	n, err := io.Copy(output, response.Body)
-	if err != nil {
+	_, error := io.Copy(output, response.Body)
+	if error != nil {
 		fmt.Println("Error while downloading", url, "-", err)
 		return
 	}
 }
 
 func main() {
-	fetchURL( "http://google.com" )
+	urlPtr := flag.String("url", "", "The base URL of the site to be downloaded. ex) http://google.com")
+
+	flag.Parse()
+
+	// If a URL was not specified, throw an error
+	if *urlPtr == "" {
+		fmt.Println("URL must not be empty. Provide a URL with the --url flag.")
+	} else {
+		fetchURL( *urlPtr )
+	}
 }
