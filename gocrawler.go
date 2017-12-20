@@ -1,7 +1,40 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+	"os"
+	"net/http"
+	"io"
+)
+
+// Inspired by: https://github.com/thbar/golang-playground/blob/master/download-files.go
+func fetchURL(url string) {
+	tokens := strings.Split(url, "/")
+	fileName := tokens[len(tokens)-1]
+	fmt.Println("Downloading", url, "to", fileName)
+
+	output, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println("Error while creating", fileName, "-", err)
+		return
+	}
+	defer output.Close()
+
+	response, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error while downloading", url, "-", err)
+		return
+	}
+	defer response.Body.Close()
+
+	n, err := io.Copy(output, response.Body)
+	if err != nil {
+		fmt.Println("Error while downloading", url, "-", err)
+		return
+	}
+}
 
 func main() {
-	fmt.Printf("Hello, world.\n")
+	fetchURL( "http://google.com" )
 }
