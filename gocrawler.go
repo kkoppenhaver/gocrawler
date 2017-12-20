@@ -36,6 +36,18 @@ func fetchURL(url string) {
 	}
 }
 
+func downloadAsset(assetPath string) {
+	// Check if the folder where the asset belongs is already present on the filesystem
+
+	// If not, create the folder
+
+	// Download the asset into the available file path
+}
+
+func selectLinks(url string) {
+	// Parse the HTML to grab all links that match the root domain to recursively parse
+}
+
 func main() {
 	urlPtr := flag.String("url", "", "The base URL of the site to be downloaded. ex) http://google.com")
 
@@ -45,6 +57,11 @@ func main() {
 	if *urlPtr == "" {
 		fmt.Println("URL must not be empty. Provide a URL with the --url flag.")
 	} else {
+		// Create a folder named after the domain that was passed in
+
+		// Fetch URL to the root of the newly created folder
 		fetchURL( *urlPtr )
 	}
+
+	// Parse any image tags on the page and pull those down into the proper directories 
 }
